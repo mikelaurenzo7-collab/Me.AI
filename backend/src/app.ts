@@ -4,6 +4,8 @@ import { env, isProviderConfigured } from "./lib/env.js";
 import { loadDb } from "./lib/db.js";
 import { requestContext } from "./lib/requestContext.js";
 import { lightweightRateLimit } from "./lib/rateLimit.js";
+import { httpErrors } from "./lib/httpErrors.js";
+import { securityHeaders } from "./lib/securityHeaders.js";
 import { authRoutes } from "./routes/auth.js";
 import { openAIRoutes } from "./routes/openai.js";
 import { callRoutes } from "./routes/calls.js";
@@ -18,7 +20,9 @@ import { privacyRoutes } from "./routes/privacy.js";
 export async function buildApp() {
   const app = Fastify({ logger: true });
 
+  await app.register(httpErrors);
   await app.register(requestContext);
+  await app.register(securityHeaders);
   await app.register(lightweightRateLimit);
   await app.register(cors, { origin: true });
   await loadDb();
