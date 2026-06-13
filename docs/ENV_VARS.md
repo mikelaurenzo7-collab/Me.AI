@@ -16,8 +16,8 @@ DB_FILE=.data/meai.json
 
 ```bash
 OPENAI_API_KEY=
-OPENAI_REALTIME_MODEL=gpt-realtime
-OPENAI_PLANNING_MODEL=gpt-5.5-thinking
+OPENAI_REALTIME_MODEL=gpt-realtime-2
+OPENAI_PLANNING_MODEL=gpt-5.5
 ```
 
 ## Twilio
