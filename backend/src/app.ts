@@ -42,7 +42,7 @@ export async function buildApp() {
 
   app.addContentTypeParser("application/x-www-form-urlencoded", { parseAs: "string" }, (req, body, done) => {
     try {
-      const parsed = new URLSearchParams(body);
+      const parsed = new URLSearchParams(body.toString());
       const result: Record<string, string> = {};
       for (const [key, value] of parsed.entries()) {
         result[key] = value;

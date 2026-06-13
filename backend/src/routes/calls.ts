@@ -55,11 +55,10 @@ export async function callRoutes(app: FastifyInstance) {
     const callSid = call.providerCallId;
     if (callSid && env.TWILIO_ACCOUNT_SID && env.TWILIO_AUTH_TOKEN) {
       try {
-        const twilio = (await import("twilio")).default;
-        const client = twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
-        await client.calls(callSid).update({
-          url: `${env.PUBLIC_BASE_URL}/api/webhooks/twilio/transfer?transferTo=${encodeURIComponent(transferTo)}`
-        });
+        await redirectTwilioCall(
+          callSid,
+          `${env.PUBLIC_BASE_URL}/api/webhooks/twilio/transfer?transferTo=${encodeURIComponent(transferTo)}`
+        );
         request.log.info(`Redirected active Twilio call ${callSid} to transfer phone: ${transferTo}`);
       } catch (err: any) {
         request.log.error(`Failed to redirect Twilio call ${callSid}: ${err.message || err}`);
@@ -80,6 +79,23 @@ export async function callRoutes(app: FastifyInstance) {
     await requireWorkspace(request);
     return reply.send({ status: "delegation_requested", note: "The active call should continue under Me.AI control with live status updates." });
   });
+}
+
+async function redirectTwilioCall(callSid: string, transferUrl: string) {
+  const credentials = Buffer.from(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`).toString("base64");
+  const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Calls/${callSid}.json`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${credentials}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({ Url: transferUrl })
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Twilio redirect failed with ${response.status}: ${body}`);
+  }
 }
 
 function buildOutboundPrompt(agentName: string, objective: string, contactName?: string) {

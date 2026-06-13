@@ -13,6 +13,11 @@ export async function httpErrors(app: FastifyInstance) {
       });
     }
 
+    const statusCode = "statusCode" in error && typeof error.statusCode === "number" ? error.statusCode : undefined;
+    if (statusCode && statusCode >= 400 && statusCode < 500) {
+      return reply.code(statusCode).send({ error: error.message, requestId });
+    }
+
     request.log.error({ error, requestId }, "Unhandled request error");
     return reply.code(500).send({ error: "Internal server error", requestId });
   });

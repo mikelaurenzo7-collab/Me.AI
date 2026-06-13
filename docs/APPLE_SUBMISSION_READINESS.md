@@ -39,6 +39,7 @@ The first Apple-reviewable build should include:
 - phone number connection or placeholder if TestFlight-only
 - Siri/App Intents for safe request creation
 - CallKit incoming/outgoing skeleton
+- WidgetKit operator status widget for Home Screen, Lock Screen, and StandBy glanceability
 - CarPlay status and active-call templates
 - notifications for confirmations and summaries
 - post-call summary screen
@@ -50,6 +51,7 @@ Business fleet mode should remain hidden or feature-flagged until personal mode 
 ## Definition of ready for TestFlight
 
 - Xcode project builds without warnings that affect signing or entitlements.
+- Main app and WidgetKit extension use the same approved App Group identifier.
 - All permissions have accurate purpose strings.
 - App does not crash when permissions are denied.
 - CallKit actions have predictable state transitions.
