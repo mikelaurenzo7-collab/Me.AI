@@ -12,8 +12,20 @@ struct MeAIAppShell: View {
 @MainActor
 final class MeAIAppState: ObservableObject {
     @Published var accountMode: AccountMode = .personal
-    @Published var readiness: AgentReadiness = .init(score: 3, total: 7, nextStep: "Set up activation shortcuts")
+    @Published var readiness: AgentReadiness = .init(score: 4, total: 8, nextStep: "Customize your agent")
     @Published var outboundDraft = OutboundRequestDraft()
+    @Published var agentProfile = AgentProfile()
+
+    @Published var scenarios: [AgentScenario] = [
+        .init(id: "scenario-1", name: "Unknown caller", trigger: "Caller is not in contacts", goal: "Screen politely and identify reason for call", escalationRule: "Escalate if urgent, family-related, legal, medical, or time-sensitive", allowedActions: "Summarize, request callback window, create reminder after approval"),
+        .init(id: "scenario-2", name: "Running late", trigger: "User asks Me.AI to notify someone", goal: "Make a concise outbound update", escalationRule: "Ask for confirmation before placing call", allowedActions: "Prepare call, place call after approval, summarize result"),
+        .init(id: "scenario-3", name: "Appointment", trigger: "Call appears related to appointment or scheduling", goal: "Confirm time, location, and next step", escalationRule: "Escalate if schedule conflict or payment issue appears", allowedActions: "Summarize, create reminder after approval")
+    ]
+
+    @Published var scripts: [AgentScript] = [
+        .init(id: "script-1", name: "Inbound screening opener", purpose: "Screen unknown callers", body: "Hi, this is Me.AI. I can help route the call. What is this regarding?", whenToUse: "Unknown inbound caller"),
+        .init(id: "script-2", name: "Running late update", purpose: "Notify someone the user is delayed", body: "Hi, this is Me.AI. Michael asked me to let you know he is running about five minutes late.", whenToUse: "User asks Me.AI to call with a delay update")
+    ]
 
     @Published var recentCalls: [MeAICallSummary] = [
         .init(
