@@ -9,7 +9,7 @@ struct AgentStudioView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Customize how Me.AI represents you")
                         .font(.title2.bold())
-                    Text("Tune the agent's name, voice, response style, training notes, scenarios, and scripts.")
+                    Text("Tune the agent's name, voice, response style, training notes, runtime policies, scenarios, and scripts.")
                         .foregroundStyle(.secondary)
                 }
                 .padding(.vertical, 8)
@@ -18,6 +18,7 @@ struct AgentStudioView: View {
             Section("Studio") {
                 NavigationLink("Identity and voice", destination: AgentIdentityView())
                 NavigationLink("Behavior and training", destination: AgentTrainingView())
+                NavigationLink("Runtime policy", destination: RuntimePolicyView())
                 NavigationLink("Scenarios", destination: AgentScenariosView())
                 NavigationLink("Scripts", destination: AgentScriptsView())
                 NavigationLink("Test prompt", destination: AgentTestPromptView())
@@ -59,6 +60,13 @@ struct AgentIdentityView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+            }
+
+            Section("Voice experience") {
+                let profile = VoiceExperienceProfile.resolve(role: appState.agentProfile.responseStyle.defaultVoiceRole, isOutbound: false)
+                LabeledContent("Silence window", value: "\(profile.silenceTimeoutSeconds, specifier: "%.1f")s")
+                LabeledContent("Interrupt threshold", value: "\(profile.wordsToInterruptAssistant) words")
+                LabeledContent("Latency priority", value: "\(profile.streamingLatencyPriority)")
             }
         }
         .navigationTitle("Identity")
@@ -174,7 +182,8 @@ struct AgentTestPromptView: View {
                 Text("Agent: \(appState.agentProfile.name)")
                 Text("Style: \(appState.agentProfile.responseStyle.label)")
                 Text("Voice: \(appState.agentProfile.voice) — \(appState.agentProfile.voiceStyle)")
-                Text("This screen will connect to backend simulation after the local build is validated.")
+                Text(appState.runtimePolicy.compiledRuntimeBlock(profile: appState.agentProfile, scenarios: appState.scenarios, scripts: appState.scripts))
+                    .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
