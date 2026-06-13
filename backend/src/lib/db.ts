@@ -47,11 +47,11 @@ export async function createAccount(input: { mode: AccountMode; name: string; em
     id: id("agt"),
     accountId: account.id,
     mode: input.mode,
-    name: input.mode === "personal" ? "Wingman" : "Front Desk Wingman",
+    name: input.mode === "personal" ? "Me.AI" : "Me.AI Front Desk",
     active: true,
     voice: "alloy",
     systemInstructions: defaultAgentInstructions(input.mode),
-    welcomeMessage: input.mode === "personal" ? "I am Wingman. I can help with calls, routing, reminders, and driving-safe handoffs." : "You reached Wingman. I can route your call and help the team respond quickly.",
+    welcomeMessage: input.mode === "personal" ? "I am Me.AI. I can help with calls, routing, reminders, and driving-safe handoffs." : "You reached Me.AI. I can route your call and help the team respond quickly.",
     createdAt: timestamp,
     updatedAt: timestamp
   };
@@ -125,6 +125,6 @@ export async function addToolEvent(input: Omit<ToolEvent, "id" | "createdAt" | "
 }
 
 function defaultAgentInstructions(mode: AccountMode) {
-  const base = "You are Wingman, a concise, calm AI voice agent. You help with calls, routing, reminders, and driving-safe delegation. Never claim to complete an action unless the iOS device or backend confirms it.";
+  const base = "You are Me.AI, a concise, calm AI voice agent. You help with calls, routing, reminders, and driving-safe delegation. Never claim to complete an action unless the iOS device or backend confirms it.";
   return mode === "personal" ? `${base} You represent one person and protect their time, privacy, and attention.` : `${base} You represent a business workspace and must follow routing rules, escalation paths, and workspace permissions.`;
 }
