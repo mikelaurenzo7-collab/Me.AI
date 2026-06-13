@@ -2,6 +2,7 @@ export type AccountMode = "personal" | "business";
 export type UserRole = "owner" | "admin" | "member";
 export type CallDirection = "inbound" | "outbound";
 export type CallStatus = "queued" | "ringing" | "active" | "completed" | "failed" | "missed";
+export type AgentResponseStyle = "concise" | "balanced" | "detailed" | "warm" | "formal" | "direct";
 export type NativeToolName =
   | "route_to_location"
   | "create_calendar_reminder"
@@ -33,8 +34,37 @@ export type Agent = {
   name: string;
   active: boolean;
   voice: string;
+  voiceStyle?: string;
+  responseStyle?: AgentResponseStyle;
   systemInstructions: string;
   welcomeMessage: string;
+  aiDisclosure?: string;
+  trainingNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AgentScenario = {
+  id: string;
+  accountId: string;
+  agentId: string;
+  name: string;
+  trigger: string;
+  goal: string;
+  escalationRule: string;
+  allowedActions: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AgentScript = {
+  id: string;
+  accountId: string;
+  agentId: string;
+  name: string;
+  purpose: string;
+  body: string;
+  whenToUse: string;
   createdAt: string;
   updatedAt: string;
 };
