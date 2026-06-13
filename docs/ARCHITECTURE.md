@@ -2,7 +2,7 @@
 
 ## Product
 
-Me.AI is an OpenAI-powered personal voice agent for native iOS, Siri, CallKit, and CarPlay-safe driving workflows.
+Me.AI is an iPhone-first, OpenAI-powered personal call operator for native iOS, Siri, App Intents, CallKit, widgets, Live Activities, and optional CarPlay-safe driving workflows.
 
 ## Modes
 
@@ -11,7 +11,7 @@ Me.AI is an OpenAI-powered personal voice agent for native iOS, Siri, CallKit, a
 - One account.
 - One primary Me.AI agent.
 - One primary phone line.
-- Simple controls for voice, instructions, contacts, call handling, quiet hours, and permissions.
+- Simple controls for activation, voice, instructions, contacts, call handling, quiet hours, and permissions.
 
 ### Business
 
@@ -26,16 +26,21 @@ Me.AI is an OpenAI-powered personal voice agent for native iOS, Siri, CallKit, a
 - OpenAI: realtime voice, reasoning, tool-calling, summaries, memory extraction, and agent orchestration.
 - Twilio: phone numbers, inbound calls, outbound calls, and call status webhooks.
 - Supabase: production database, auth, RLS, and audit history.
-- Apple: Siri/App Intents, CallKit, PushKit, MapKit, EventKit, Live Activities, WidgetKit, and CarPlay-safe UI.
+- Apple: Siri/App Intents, Shortcuts, CallKit, PushKit, MapKit, EventKit, Live Activities, WidgetKit, Action Button/Back Tap configuration guidance, and optional CarPlay-safe UI.
 
-## iOS architecture
+## iPhone-first architecture
 
-- App scene: SwiftUI cockpit for setup, account mode, permissions, call history, and active call state.
-- CarPlay scene: `CPTemplateApplicationSceneDelegate` renders system-approved templates when CarPlay connects.
+- App scene: SwiftUI cockpit for setup, activation, account mode, permissions, call history, active call state, summaries, and pending confirmations.
+- Activation layer: App Intents and App Shortcuts expose high-level Me.AI commands for Siri, widgets, Action Button, Back Tap, and Shortcuts.
 - Call layer: `CXProvider` and `CXCallController` handle incoming, delegated, and outbound VoIP call states.
-- Siri/App Intents: App Intents expose high-level Me.AI commands such as start call, delegate call, route destination, and create reminder.
-- Widget/Live Activity layer: small glanceable status entry points for call state and automation progress.
+- Widget/Live Activity layer: glanceable status entry points for call state, pending confirmation, and summary readiness.
 - Native tool bus: backend-approved tool calls are executed only through permissioned iOS handlers.
+
+## CarPlay extension architecture
+
+- CarPlay scene: `CPTemplateApplicationSceneDelegate` renders system-approved templates when CarPlay connects.
+- CarPlay mirrors only the minimum safe call state and confirmation actions.
+- CarPlay must not block the main iPhone MVP or TestFlight path.
 
 ## CarPlay guardrails
 
