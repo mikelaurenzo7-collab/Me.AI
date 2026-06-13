@@ -101,6 +101,13 @@ export async function addCall(input: Omit<CallLog, "id" | "createdAt" | "updated
   return call;
 }
 
+export async function listCallsForAccount(accountId: string) {
+  const db = await loadDb();
+  return db.calls
+    .filter((call) => call.accountId === accountId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
 export async function upsertDevice(input: Omit<DeviceRegistration, "id" | "lastSeenAt">) {
   const db = await loadDb();
   const existing = db.devices.find((item) => item.userId === input.userId && item.deviceId === input.deviceId);
@@ -120,6 +127,23 @@ export async function addToolEvent(input: Omit<ToolEvent, "id" | "createdAt" | "
   const timestamp = now();
   const event: ToolEvent = { id: id("tool"), createdAt: timestamp, updatedAt: timestamp, ...input };
   db.toolEvents.push(event);
+  await saveDb(db);
+  return event;
+}
+
+export async function listPendingToolEventsForAccount(accountId: string) {
+  const db = await loadDb();
+  return db.toolEvents
+    .filter((event) => event.accountId === accountId && ["requested", "sent_to_device"].includes(event.status))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function resolveToolEvent(accountId: string, eventId: string, status: "completed" | "denied" | "failed") {
+  const db = await loadDb();
+  const event = db.toolEvents.find((item) => item.accountId === accountId && item.id === eventId);
+  if (!event) return null;
+  event.status = status;
+  event.updatedAt = now();
   await saveDb(db);
   return event;
 }
