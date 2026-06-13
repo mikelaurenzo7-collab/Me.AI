@@ -22,12 +22,56 @@ struct APIClient {
         try await post(path: "/api/calls/outbound", body: ["toNumber": number, "spokenObjective": objective, "source": source])
     }
 
+    func fetchCallHistory() async throws -> Data {
+        try await get(path: "/api/calls/history")
+    }
+
+    func fetchPendingConfirmations() async throws -> Data {
+        try await get(path: "/api/tools/pending")
+    }
+
+    func approveToolEvent(id: String) async throws -> Data {
+        try await post(path: "/api/tools/\(id)/approve", body: [:])
+    }
+
+    func declineToolEvent(id: String) async throws -> Data {
+        try await post(path: "/api/tools/\(id)/decline", body: [:])
+    }
+
+    private func get(path: String) async throws -> Data {
+        var request = URLRequest(url: baseURL.appending(path: path))
+        request.httpMethod = "GET"
+        addHeaders(to: &request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try validate(response)
+        return data
+    }
+
     private func post(path: String, body: [String: String]) async throws -> Data {
         var request = URLRequest(url: baseURL.appending(path: path))
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        addHeaders(to: &request)
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try validate(response)
         return data
     }
+
+    private func addHeaders(to request: inout URLRequest) {
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token, !token.isEmpty {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+    }
+
+    private func validate(_ response: URLResponse) throws {
+        guard let http = response as? HTTPURLResponse else { return }
+        guard (200..<300).contains(http.statusCode) else {
+            throw APIClientError.requestFailed(statusCode: http.statusCode)
+        }
+    }
+}
+
+enum APIClientError: Error {
+    case requestFailed(statusCode: Int)
 }
