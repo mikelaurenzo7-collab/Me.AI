@@ -16,12 +16,17 @@ const schema = z.object({
   TWILIO_STATUS_WEBHOOK_PATH: z.string().default("/api/webhooks/twilio/status"),
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_ANON_KEY: z.string().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional()
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  VAPI_API_KEY: z.string().optional(),
+  VAPI_ASSISTANT_ID: z.string().optional(),
+  ELEVEN_LABS_API_KEY: z.string().optional()
 });
 
 export const env = schema.parse(process.env);
 export const isProviderConfigured = {
   openai: Boolean(env.OPENAI_API_KEY),
   twilio: Boolean(env.TWILIO_ACCOUNT_SID && env.TWILIO_AUTH_TOKEN),
-  supabase: Boolean(env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY)
+  supabase: Boolean(env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY),
+  vapi: Boolean(env.VAPI_API_KEY),
+  elevenlabs: Boolean(env.ELEVEN_LABS_API_KEY)
 };

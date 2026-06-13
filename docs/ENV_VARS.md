@@ -38,6 +38,15 @@ SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
+## Vapi & ElevenLabs
+
+```bash
+VAPI_API_KEY=
+VAPI_ASSISTANT_ID=
+ELEVEN_LABS_API_KEY=
+```
+
+
 ## iOS
 
 ```bash

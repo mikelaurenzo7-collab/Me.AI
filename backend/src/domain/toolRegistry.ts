@@ -55,3 +55,23 @@ export function toOpenAITools() {
     strict: true
   }));
 }
+
+export function toVapiTools() {
+  return nativeTools.map((tool) => ({
+    type: "function",
+    async: false,
+    messages: [
+      {
+        type: "request-start",
+        content: tool.requiresConfirmation
+          ? "I am sending that to Michael's iPhone for confirmation."
+          : "Processing that request now."
+      }
+    ],
+    function: {
+      name: tool.name,
+      description: tool.description,
+      parameters: tool.schema
+    }
+  }));
+}
