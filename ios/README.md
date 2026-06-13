@@ -2,13 +2,13 @@
 
 Native iOS and CarPlay skeleton for Me.AI.
 
-This folder intentionally starts as source-level scaffolding rather than a generated Xcode project. Create the Xcode target around these files, then wire capabilities and signing after Apple entitlement approval.
+This folder now includes source-level scaffolding plus an XcodeGen project spec. Generate the Xcode project locally with `xcodegen generate` from the `ios/` directory.
 
-## Targets to create
+## Targets planned
 
-- `MeAIApp`: SwiftUI app target.
-- `MeAIIntents`: App Intents and Siri shortcuts.
-- `MeAIWidget`: WidgetKit and Live Activity target.
+- `MeAI`: SwiftUI app target.
+- `MeAIIntents`: App Intents and Siri shortcuts, currently in source scaffold.
+- `MeAIWidget`: WidgetKit and Live Activity target, planned next.
 
 ## Required capabilities
 
@@ -20,12 +20,23 @@ This folder intentionally starts as source-level scaffolding rather than a gener
 
 ## Core files
 
-- `App/MeAIApp.swift`
-- `App/Views/DashboardView.swift`
-- `App/Services/APIClient.swift`
-- `App/Services/CallKitManager.swift`
-- `App/Services/DeviceToolClient.swift`
-- `CarPlay/CarPlaySceneDelegate.swift`
-- `Intents/MeAIAppIntents.swift`
+- `Sources/MeAIEntry.swift`
+- `Sources/AppShell.swift`
+- `Sources/DashboardView.swift`
+- `Sources/SetupFlowView.swift`
+- `Sources/ActiveCallView.swift`
+- `Sources/APIClient.swift`
+- `Sources/CallKitManager.swift`
+- `Sources/CarScene.swift`
+- `Sources/CarPlaySceneAlias.swift`
+- `Sources/MeAIAppIntents.swift`
+- `Sources/NativeToolExecutor.swift`
+- `Sources/DesignTokens.swift`
 - `Config/Info.plist`
 - `Config/MeAI.entitlements`
+- `Config/PrivacyInfo.xcprivacy`
+- `project.yml`
+
+## Build notes
+
+See `BUILDING.md`.
