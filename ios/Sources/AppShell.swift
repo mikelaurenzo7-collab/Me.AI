@@ -15,6 +15,7 @@ final class MeAIAppState: ObservableObject {
     @Published var readiness: AgentReadiness = .init(score: 4, total: 8, nextStep: "Customize your agent")
     @Published var outboundDraft = OutboundRequestDraft()
     @Published var agentProfile = AgentProfile()
+    @Published var runtimePolicy = AgentRuntimePolicy()
 
     @Published var scenarios: [AgentScenario] = [
         .init(id: "scenario-1", name: "Unknown caller", trigger: "Caller is not in contacts", goal: "Screen politely and identify reason for call", escalationRule: "Escalate if urgent, family-related, legal, medical, or time-sensitive", allowedActions: "Summarize, request callback window, create reminder after approval"),
@@ -60,6 +61,21 @@ final class MeAIAppState: ObservableObject {
         .init(id: "rule-2", name: "Unknown callers", phoneNumber: "Not in contacts", handling: .screenFirst),
         .init(id: "rule-3", name: "Work calls", phoneNumber: "Business contacts", handling: .delegate)
     ]
+
+    func refreshReadiness() {
+        readiness = ReadinessEngine.evaluate(
+            .init(
+                hasAgentProfile: !agentProfile.name.isEmpty,
+                hasActivationSetup: true,
+                hasPhoneLine: false,
+                hasNotificationPermission: false,
+                hasContactRules: !contactRules.isEmpty,
+                hasPrivacyReview: true,
+                hasConfirmationRules: true,
+                hasProviderConnection: false
+            )
+        )
+    }
 
     func approve(_ confirmation: PendingConfirmation) {
         pendingConfirmations.removeAll { $0.id == confirmation.id }
