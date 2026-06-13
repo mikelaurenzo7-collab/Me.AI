@@ -24,6 +24,12 @@ struct DashboardView: View {
                         .foregroundStyle(.secondary)
                 }
 
+                Section("Agent") {
+                    NavigationLink("Agent Studio", destination: AgentStudioView())
+                    Text("Customize name, voice, response style, training, scenarios, and scripts.")
+                        .foregroundStyle(.secondary)
+                }
+
                 Section("iPhone-first actions") {
                     NavigationLink("Set up activation", destination: ActivationSetupView())
                     NavigationLink("Open setup checklist", destination: SetupFlowView())
