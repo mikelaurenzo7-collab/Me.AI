@@ -2,6 +2,8 @@ import type { FastifyInstance } from "fastify";
 import { env, isProviderConfigured } from "../lib/env.js";
 import { requireWorkspace } from "../lib/authGuard.js";
 import { toOpenAITools } from "../domain/toolRegistry.js";
+import { compileAgentInstructions } from "../domain/agentCompiler.js";
+import { listAgentStudio } from "../lib/db.js";
 
 export async function openAIRoutes(app: FastifyInstance) {
   app.post("/api/openai/realtime/session", async (request, reply) => {
@@ -9,10 +11,13 @@ export async function openAIRoutes(app: FastifyInstance) {
     const agent = workspace.agents.find((item) => item.active);
     if (!agent) return reply.code(404).send({ error: "No active agent" });
 
+    const studio = await listAgentStudio(workspace.account.id, agent.id);
+    const instructions = compileAgentInstructions({ agent, scenarios: studio.scenarios, scripts: studio.scripts });
+
     const sessionConfig = {
       type: "realtime",
       model: env.OPENAI_REALTIME_MODEL,
-      instructions: agent.systemInstructions,
+      instructions,
       voice: agent.voice,
       reasoning: { effort: "low" },
       tools: toOpenAITools(),
