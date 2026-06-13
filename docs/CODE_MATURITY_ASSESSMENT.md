@@ -22,41 +22,41 @@ The product strategy, architecture, Apple readiness docs, and design direction a
 
 ## Current score by area
 
-### Product strategy: 7/10
+### Product strategy: 7.5/10
 
-The iPhone-first MVP direction is clear. CarPlay is properly treated as a later extension. Activation, call handling, summaries, and confirmations are now the core.
+The iPhone-first MVP direction is clear. CarPlay is properly treated as a later extension. Activation, Agent Studio, call handling, summaries, privacy, and confirmations are now the core.
 
 ### Design and UX: 5/10
 
 Figma and SwiftUI screens exist for the main direction, but the app still needs full simulator review, final visual polish, complete empty/loading/error states, and real data validation.
 
-### Backend architecture: 3.5/10
+### Backend architecture: 4/10
 
-The backend has a real Fastify app structure, routes, domain models, OpenAI realtime session route, submission gates route, tool registry, call history routes, pending confirmation routes, and basic tests. It is not production-integrated yet.
+The backend has a real Fastify app structure, routes, domain models, OpenAI realtime session route, submission gates route, tool registry, Agent Studio routes, call history routes, privacy export routes, pending confirmation routes, and basic tests. It is not production-integrated yet.
 
-### Backend production readiness: 1.5/10
+### Backend production readiness: 2/10
 
-Missing live provider validation, Twilio provisioning, webhook signature validation, real database integration, RLS policies, rate limiting, monitoring, and deployment hardening.
+Privacy export and summary routes exist. Still missing live provider validation, Twilio provisioning, webhook signature validation, real database integration, RLS policies, rate limiting, monitoring, and deployment hardening.
 
-### iOS app code: 3/10
+### iOS app code: 3.5/10
 
-The app now has SwiftUI screens for activation, setup, active call, outbound request creation, pending confirmations, call history, call summary, contact rules, and dashboard navigation. It also has App Intents, CallKit scaffold, CarPlay scaffold, API client scaffold, design tokens, and an XcodeGen project spec. It has not been locally compiled or run in Xcode yet.
+The app now has SwiftUI screens for activation, Agent Studio, setup, active call, outbound request creation, pending confirmations, call history, call summary, contact rules, Privacy Center, Settings, and dashboard navigation. It also has App Intents, CallKit scaffold, CarPlay scaffold, API client scaffold, Keychain storage utility, app configuration, design tokens, and an XcodeGen project spec. It has not been locally compiled or run in Xcode yet.
 
-### iOS production readiness: 1/10
+### iOS production readiness: 1.5/10
 
-Missing local build validation, signing, real auth token storage, PushKit wiring, widget target, Live Activity target, real CallKit state machine, device testing, and App Store packaging.
+Keychain storage and Privacy Center are started. Missing local build validation, signing, complete auth state, PushKit wiring, widget target, Live Activity target, real CallKit state machine, device testing, and App Store packaging.
 
 ### Integrations: 1.5/10
 
-OpenAI session creation route exists, and the iOS API client has endpoints for call history and confirmations. Live voice sessions, Twilio call routing, PushKit, Supabase production persistence, and provider loops are not wired end-to-end.
+OpenAI session creation route exists, and the iOS API client has endpoints for call history and confirmations. Agent Studio compiles into OpenAI session instructions. Live voice sessions, Twilio call routing, PushKit, Supabase production persistence, and provider loops are not wired end-to-end.
 
-### Tests and CI: 2.5/10
+### Tests and CI: 3/10
 
-Backend Vitest setup, smoke tests, and route auth tests exist. iOS tests, provider integration tests, build validation, and E2E tests do not exist yet.
+Backend Vitest setup, smoke tests, route auth tests, Agent Studio compiler tests, history tests, and privacy route tests exist. iOS tests, provider integration tests, build validation, and E2E tests do not exist yet.
 
-### Apple submission readiness: 2/10
+### Apple submission readiness: 2.5/10
 
-Apple submission docs, privacy manifest draft, metadata draft, review notes, and submission gates exist. Actual Apple Developer signing, TestFlight upload, screenshots, App Store Connect metadata, and entitlement approval are not done.
+Apple submission docs, privacy manifest draft, metadata draft, review notes, guideline guardrails, Privacy Center, and submission gates exist. Actual Apple Developer signing, TestFlight upload, screenshots, App Store Connect metadata, and entitlement approval are not done.
 
 ## Honest status
 
@@ -69,13 +69,15 @@ Early iPhone-first MVP foundation with strong architecture/docs and a growing ap
 ## What improved in the latest coding pass
 
 - Added richer iOS models for call summaries, call status, pending confirmations, contact rules, and outbound request drafts.
+- Added Agent Studio product spec, SwiftUI screens, backend routes, persistence helpers, and OpenAI instruction compiler.
 - Added demo app state so the iPhone UI can show realistic call and confirmation content.
-- Added SwiftUI screens for outbound requests, pending confirmations, call history, call summaries, and contact rules.
+- Added SwiftUI screens for outbound requests, pending confirmations, call history, call summaries, contact rules, Privacy Center, and Settings.
 - Wired the new MVP screens into the dashboard.
+- Added app configuration and Keychain storage utility.
 - Expanded the iOS API client with bearer-token support and endpoints for call history and confirmations.
-- Added backend routes for call history and pending tool confirmations.
-- Added backend database helpers for calls and tool-event resolution.
-- Added backend tests for auth-protected history routes.
+- Added backend routes for call history, pending tool confirmations, Agent Studio, and privacy export/summary.
+- Added backend database helpers for calls, tool-event resolution, Agent Studio persistence, and privacy export support.
+- Added backend tests for auth-protected history and privacy routes.
 
 ## What must happen to become a real MVP
 
@@ -83,7 +85,7 @@ Early iPhone-first MVP foundation with strong architecture/docs and a growing ap
 2. Fix Swift compile issues.
 3. Run the app in iPhone Simulator.
 4. Wire navigation and state across actual flows.
-5. Add real auth/session handling.
+5. Add complete auth/session handling.
 6. Add real phone number provisioning.
 7. Connect inbound and outbound call flows.
 8. Wire CallKit and PushKit on a real device.
@@ -91,6 +93,7 @@ Early iPhone-first MVP foundation with strong architecture/docs and a growing ap
 10. Add widget and Live Activity targets.
 11. Add provider webhooks and validation.
 12. Add proper tests and smoke-test scripts.
+13. Add account deletion flow before App Store submission.
 
 ## Confidence note
 
