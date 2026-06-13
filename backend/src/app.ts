@@ -9,6 +9,7 @@ import { deviceRoutes } from "./routes/devices.js";
 import { toolRoutes } from "./routes/tools.js";
 import { webhookRoutes } from "./routes/webhooks.js";
 import { submissionRoutes } from "./routes/submission.js";
+import { historyRoutes } from "./routes/history.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -30,6 +31,7 @@ export async function buildApp() {
   await app.register(toolRoutes);
   await app.register(webhookRoutes);
   await app.register(submissionRoutes);
+  await app.register(historyRoutes);
 
   return app;
 }
