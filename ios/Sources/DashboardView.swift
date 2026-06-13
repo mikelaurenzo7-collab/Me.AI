@@ -28,8 +28,13 @@ struct DashboardView: View {
                     NavigationLink("Set up activation", destination: ActivationSetupView())
                     NavigationLink("Open setup checklist", destination: SetupFlowView())
                     NavigationLink("View active call state", destination: ActiveCallView())
-                    Button("Start outbound Me.AI request") {}
-                    Button("Review pending confirmations") {}
+                    NavigationLink("Start outbound request", destination: OutboundRequestView())
+                    NavigationLink("Review confirmations", destination: PendingConfirmationsView())
+                }
+
+                Section("Calls") {
+                    NavigationLink("Call history", destination: CallHistoryView())
+                    NavigationLink("Contact rules", destination: ContactRulesView())
                 }
 
                 Section("CarPlay") {
