@@ -24,7 +24,7 @@ struct ReadinessEngine {
             (input.hasProviderConnection, "Connect live providers")
         ]
 
-        let completed = checks.filter(\.0).count
+        let completed = checks.filter { $0.0 }.count
         let next = checks.first(where: { !$0.0 })?.1 ?? "Ready for live testing"
         return AgentReadiness(score: completed, total: checks.count, nextStep: next)
     }
