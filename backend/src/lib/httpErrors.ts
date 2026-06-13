@@ -1,6 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 
+type HttpError = Error & { statusCode?: number };
+
 export async function httpErrors(app: FastifyInstance) {
   app.setErrorHandler((error, request, reply) => {
     const requestId = request.headers["x-request-id"];
@@ -13,9 +15,10 @@ export async function httpErrors(app: FastifyInstance) {
       });
     }
 
-    const statusCode = "statusCode" in error && typeof error.statusCode === "number" ? error.statusCode : undefined;
+    const httpError = error as HttpError;
+    const statusCode = httpError.statusCode;
     if (statusCode && statusCode >= 400 && statusCode < 500) {
-      return reply.code(statusCode).send({ error: error.message, requestId });
+      return reply.code(statusCode).send({ error: httpError.message, requestId });
     }
 
     request.log.error({ error, requestId }, "Unhandled request error");

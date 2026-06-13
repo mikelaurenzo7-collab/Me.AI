@@ -21,6 +21,12 @@ Me.AI is an iPhone-first, OpenAI-powered personal call operator for native iOS, 
 - Multiple numbers.
 - Fleet view, routing, transcripts, analytics, and admin controls.
 
+## Backend API layer
+
+- Fastify is the existing Node.js HTTP/WebSocket server framework for the backend orchestration API.
+- The backend uses Fastify plugins for CORS, websocket media streams, request context, security headers, rate limiting, route registration, and shared error handling.
+- Fastify is not an Apple dependency; it only powers the server-side API that iOS, Twilio, OpenAI, and provider webhooks call.
+
 ## Provider roles
 
 - OpenAI: realtime voice, reasoning, tool-calling, summaries, memory extraction, and agent orchestration.
