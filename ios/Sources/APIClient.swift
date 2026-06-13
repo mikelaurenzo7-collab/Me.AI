@@ -39,7 +39,7 @@ struct APIClient {
     }
 
     private func get(path: String) async throws -> Data {
-        var request = URLRequest(url: baseURL.appending(path: path))
+        var request = URLRequest(url: endpoint(path))
         request.httpMethod = "GET"
         addHeaders(to: &request)
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -48,13 +48,22 @@ struct APIClient {
     }
 
     private func post(path: String, body: [String: String]) async throws -> Data {
-        var request = URLRequest(url: baseURL.appending(path: path))
+        var request = URLRequest(url: endpoint(path))
         request.httpMethod = "POST"
         addHeaders(to: &request)
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
         let (data, response) = try await URLSession.shared.data(for: request)
         try validate(response)
         return data
+    }
+
+    private func endpoint(_ path: String) -> URL {
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) ?? URLComponents()
+        let basePath = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let requestPath = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let joined = [basePath, requestPath].filter { !$0.isEmpty }.joined(separator: "/")
+        components.path = "/" + joined
+        return components.url ?? baseURL
     }
 
     private func addHeaders(to request: inout URLRequest) {
