@@ -11,15 +11,23 @@ xcodegen generate
 open MeAI.xcodeproj
 ```
 
-## Signing
+## Default compile target
+
+The default project is iPhone-first and compile-safe. `Config/MeAI.entitlements` is intentionally minimal so local simulator builds are not blocked by gated Apple capabilities before approval.
+
+## Signing before device/TestFlight
 
 Before a real device or TestFlight build:
 
 1. Create the final Bundle ID in Apple Developer.
-2. Enable Siri and Push Notifications.
-3. Add Background Modes in Xcode.
-4. Request and configure CarPlay communication entitlement after approval.
-5. Use automatic signing with the correct Apple team.
+2. Use automatic signing with the correct Apple team.
+3. Enable any required capabilities in the Apple Developer portal.
+4. Add Push Notifications only when APNs/PushKit is being tested.
+5. Request and configure CarPlay communication entitlement only after Apple approval.
+
+## Gated entitlement template
+
+`Config/MeAI.Submission.entitlements.template` contains the later APNs/CarPlay entitlement template. Do not switch the Xcode target to that file until the Apple account and provisioning profile include those capabilities.
 
 ## Current target
 
@@ -27,6 +35,10 @@ Before a real device or TestFlight build:
 - Bundle ID: `com.meai.app`
 - Minimum iOS: 18.0
 
-## Important
+## First Xcode pass
 
-The CarPlay entitlement template exists in `Config/MeAI.entitlements`, but the entitlement must be approved by Apple and included in the signed provisioning profile before the app can appear in CarPlay.
+1. Generate the Xcode project.
+2. Select an iPhone simulator.
+3. Build the `MeAI` target.
+4. Fix Swift compile issues before enabling PushKit, APNs, or CarPlay entitlements.
+5. Only after simulator build succeeds, move to signing and device testing.
