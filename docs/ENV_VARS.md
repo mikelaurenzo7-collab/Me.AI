@@ -46,7 +46,6 @@ VAPI_ASSISTANT_ID=
 ELEVEN_LABS_API_KEY=
 ```
 
-
 ## iOS
 
 ```bash

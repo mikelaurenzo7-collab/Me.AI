@@ -1,10 +1,10 @@
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { addCall, findPhoneLineByE164, getActiveAgent, listAgentStudio, addToolEvent, findCallByProviderId, loadDb, saveDb } from "../lib/db.js";
 import { compileAgentInstructions } from "../domain/agentCompiler.js";
 import { toVapiTools } from "../domain/toolRegistry.js";
 
 export async function webhookRoutes(app: FastifyInstance) {
-  app.post("/api/webhooks/twilio/voice", async (request, reply) => {
+  app.post("/api/webhooks/twilio/voice", async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as Record<string, string | undefined> | undefined;
     const fromNumber = body?.From;
     const toNumber = body?.To;
@@ -36,11 +36,11 @@ export async function webhookRoutes(app: FastifyInstance) {
     return reply.type("text/xml").send(twiml);
   });
 
-  app.post("/api/webhooks/twilio/status", async (_request, reply) => {
+  app.post("/api/webhooks/twilio/status", async (_request: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, received: "twilio_status" });
   });
 
-  app.post("/api/webhooks/twilio/transfer", async (request, reply) => {
+  app.post("/api/webhooks/twilio/transfer", async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as Record<string, string | undefined> | undefined;
     const body = request.body as Record<string, string | undefined> | undefined;
     const transferTo = query?.transferTo ?? body?.transferTo ?? "+16305550199";
@@ -54,11 +54,11 @@ export async function webhookRoutes(app: FastifyInstance) {
     return reply.type("text/xml").send(twiml);
   });
 
-  app.post("/api/webhooks/openai/realtime", async (_request, reply) => {
+  app.post("/api/webhooks/openai/realtime", async (_request: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, received: "openai_realtime_event" });
   });
 
-  app.post("/api/webhooks/vapi", async (request, reply) => {
+  app.post("/api/webhooks/vapi", async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as any;
     const message = body?.message;
 
