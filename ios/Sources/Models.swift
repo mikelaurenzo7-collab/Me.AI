@@ -90,3 +90,52 @@ struct OutboundRequestDraft {
     var objective: String = ""
     var shouldConfirmBeforeDialing: Bool = true
 }
+
+enum AgentResponseStyle: String, CaseIterable, Identifiable {
+    case concise
+    case balanced
+    case detailed
+    case warm
+    case formal
+    case direct
+
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .concise: "Concise"
+        case .balanced: "Balanced"
+        case .detailed: "Detailed"
+        case .warm: "Warm"
+        case .formal: "Formal"
+        case .direct: "Direct"
+        }
+    }
+}
+
+struct AgentProfile {
+    var name: String = "Me.AI"
+    var voice: String = "alloy"
+    var voiceStyle: String = "Calm, professional"
+    var responseStyle: AgentResponseStyle = .concise
+    var welcomeMessage: String = "I am Me.AI. I can help screen, place, summarize, and follow up on calls."
+    var aiDisclosure: String = "This is Me.AI, an AI assistant."
+    var behaviorInstructions: String = "Be concise, calm, helpful, and privacy-protective. Ask for confirmation before sensitive actions."
+    var trainingNotes: String = "Protect my time. Unknown callers should be screened first. Family and urgent calls should be prioritized."
+}
+
+struct AgentScenario: Identifiable {
+    let id: String
+    var name: String
+    var trigger: String
+    var goal: String
+    var escalationRule: String
+    var allowedActions: String
+}
+
+struct AgentScript: Identifiable {
+    let id: String
+    var name: String
+    var purpose: String
+    var body: String
+    var whenToUse: String
+}
