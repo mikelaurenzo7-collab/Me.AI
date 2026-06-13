@@ -34,12 +34,18 @@ enum CallStatus: String, Codable, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .queued: "Queued"
-        case .ringing: "Ringing"
-        case .active: "Active"
-        case .completed: "Completed"
-        case .failed: "Failed"
-        case .missed: "Missed"
+        case .queued:
+            return "Queued"
+        case .ringing:
+            return "Ringing"
+        case .active:
+            return "Active"
+        case .completed:
+            return "Completed"
+        case .failed:
+            return "Failed"
+        case .missed:
+            return "Missed"
         }
     }
 }
@@ -72,9 +78,12 @@ struct ContactRule: Identifiable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .alwaysRing: "Always ring"
-            case .screenFirst: "Screen first"
-            case .delegate: "Delegate"
+            case .alwaysRing:
+                return "Always ring"
+            case .screenFirst:
+                return "Screen first"
+            case .delegate:
+                return "Delegate"
             }
         }
     }
@@ -102,12 +111,18 @@ enum AgentResponseStyle: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .concise: "Concise"
-        case .balanced: "Balanced"
-        case .detailed: "Detailed"
-        case .warm: "Warm"
-        case .formal: "Formal"
-        case .direct: "Direct"
+        case .concise:
+            return "Concise"
+        case .balanced:
+            return "Balanced"
+        case .detailed:
+            return "Detailed"
+        case .warm:
+            return "Warm"
+        case .formal:
+            return "Formal"
+        case .direct:
+            return "Direct"
         }
     }
 }
