@@ -45,6 +45,7 @@ struct DashboardView: View {
 
                 Section("Trust") {
                     NavigationLink("Privacy Center", destination: PrivacyCenterView())
+                    NavigationLink("Settings", destination: SettingsView())
                     Text("Permissions, data controls, and confirmation rules stay visible.")
                         .foregroundStyle(.secondary)
                 }
