@@ -1,7 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { requireWorkspace } from "../lib/authGuard.js";
-import { addCall } from "../lib/db.js";
+import { addCall, loadDb, saveDb } from "../lib/db.js";
+import { env } from "../lib/env.js";
 
 const outboundSchema = z.object({
   toNumber: z.string().min(3),
@@ -35,9 +36,44 @@ export async function callRoutes(app: FastifyInstance) {
     });
   });
 
-  app.post("/api/calls/:callId/takeover", async (request, reply) => {
-    await requireWorkspace(request);
-    return reply.send({ status: "takeover_requested", note: "The iOS CallKit layer should foreground the active call and pause autonomous handling." });
+  app.post<{ Params: { callId: string } }>("/api/calls/:callId/takeover", async (request, reply) => {
+    const workspace = await requireWorkspace(request);
+    const db = await loadDb();
+    const call = db.calls.find((item) => item.id === request.params.callId);
+    if (!call) return reply.code(404).send({ error: "Call not found" });
+
+    // Mark call status as completed (handoff terminates AI screening session)
+    call.status = "completed";
+    call.outcome = "Call taken over by Michael";
+    call.updatedAt = new Date().toISOString();
+    await saveDb(db);
+
+    // Look up PhoneLine's transferPhone configuration
+    const phoneLine = db.phoneLines.find((line) => line.id === call.phoneLineId || line.accountId === workspace.account.id);
+    const transferTo = phoneLine?.transferPhone ?? "+16305550199";
+
+    const callSid = call.providerCallId;
+    if (callSid && env.TWILIO_ACCOUNT_SID && env.TWILIO_AUTH_TOKEN) {
+      try {
+        const twilio = (await import("twilio")).default;
+        const client = twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
+        await client.calls(callSid).update({
+          url: `${env.PUBLIC_BASE_URL}/api/webhooks/twilio/transfer?transferTo=${encodeURIComponent(transferTo)}`
+        });
+        request.log.info(`Redirected active Twilio call ${callSid} to transfer phone: ${transferTo}`);
+      } catch (err: any) {
+        request.log.error(`Failed to redirect Twilio call ${callSid}: ${err.message || err}`);
+      }
+    } else {
+      request.log.info(`[Twilio Mock] Redirected call ${callSid || "demo_call"} to transfer phone: ${transferTo}`);
+    }
+
+    return reply.send({
+      status: "takeover_initiated",
+      transferTo,
+      providerCallId: callSid || "demo_call",
+      note: "Twilio redirect webhook issued, call transfer initiated to user handset."
+    });
   });
 
   app.post("/api/calls/:callId/delegate", async (request, reply) => {

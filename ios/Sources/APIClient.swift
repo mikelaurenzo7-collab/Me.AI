@@ -38,6 +38,14 @@ struct APIClient {
         try await post(path: "/api/tools/\(id)/decline", body: [:])
     }
 
+    func createRequest(text: String) async throws -> Data {
+        try await post(path: "/api/tools/request", body: ["request": text])
+    }
+
+    func delegateCall(id: String) async throws -> Data {
+        try await post(path: "/api/calls/\(id)/delegate", body: [:])
+    }
+
     private func get(path: String) async throws -> Data {
         var request = URLRequest(url: endpoint(path))
         request.httpMethod = "GET"

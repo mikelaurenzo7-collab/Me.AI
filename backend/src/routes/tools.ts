@@ -25,4 +25,21 @@ export async function toolRoutes(app: FastifyInstance) {
     });
     return reply.send({ event, delivery: "queued_for_active_ios_device" });
   });
+
+  app.post("/api/tools/request", async (request, reply) => {
+    const workspace = await requireWorkspace(request);
+    const input = z.object({ request: z.string().min(1) }).parse(request.body);
+    const event = await addToolEvent({
+      accountId: workspace.account.id,
+      toolName: "request_user_confirmation",
+      status: "requested",
+      request: {
+        title: "Siri Request",
+        detail: input.request,
+        actionLabel: "Approve request",
+        risk: "Processes Siri intent request"
+      }
+    });
+    return reply.send({ event, message: "Request received and queued for confirmation." });
+  });
 }

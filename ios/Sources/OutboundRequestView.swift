@@ -28,13 +28,11 @@ struct OutboundRequestView: View {
     }
 
     private func prepareDemoRequest() {
-        let confirmation = PendingConfirmation(
-            id: UUID().uuidString,
-            title: "Place outbound call",
-            detail: "Call \(appState.outboundDraft.recipient) and \(appState.outboundDraft.objective)",
-            actionLabel: "Approve call",
-            risk: "Places a call"
+        appState.queueOutboundCall(
+            to: appState.outboundDraft.recipient,
+            objective: appState.outboundDraft.objective
         )
-        appState.pendingConfirmations.insert(confirmation, at: 0)
+        appState.outboundDraft.recipient = ""
+        appState.outboundDraft.objective = ""
     }
 }

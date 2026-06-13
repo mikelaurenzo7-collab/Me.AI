@@ -2,8 +2,8 @@ import { z } from "zod";
 
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  PORT: z.coerce.number().default(8787),
-  PUBLIC_BASE_URL: z.string().url().default("http://localhost:8787"),
+  PORT: z.coerce.number().default(3000),
+  PUBLIC_BASE_URL: z.string().url().default("http://localhost:3000"),
   SESSION_SECRET: z.string().min(12).default("local-meai-secret"),
   DB_FILE: z.string().default(".data/meai.json"),
   OPENAI_API_KEY: z.string().optional(),

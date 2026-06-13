@@ -5,7 +5,7 @@ struct AppConfiguration {
     let isSampleDataEnabled: Bool
 
     static let local = AppConfiguration(
-        apiBaseURL: URL(string: "http://127.0.0.1:8787")!,
+        apiBaseURL: URL(string: "http://localhost:3000")!,
         isSampleDataEnabled: true
     )
 

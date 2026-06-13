@@ -29,5 +29,12 @@
   <string>Me.AI can create reminders after your confirmation.</string>
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>Me.AI can hand off route requests to Maps after your confirmation.</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Me.AI requires microphone access to record custom operators, greetings, and screen active incoming calls.</string>
+  <key>UIBackgroundModes</key>
+  <array>
+    <string>audio</string>
+    <string>voip</string>
+  </array>
 </dict>
 </plist>

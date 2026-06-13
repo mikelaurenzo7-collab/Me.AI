@@ -76,6 +76,7 @@ export type PhoneLine = {
   e164: string;
   label: string;
   twilioNumberSid?: string;
+  transferPhone?: string;
   active: boolean;
   createdAt: string;
 };
@@ -87,6 +88,8 @@ export type DeviceRegistration = {
   deviceId: string;
   voipToken?: string;
   pushToken?: string;
+  fcmToken?: string;
+  platform: "ios" | "android";
   lastSeenAt: string;
 };
 

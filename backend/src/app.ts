@@ -16,6 +16,18 @@ import { submissionRoutes } from "./routes/submission.js";
 import { historyRoutes } from "./routes/history.js";
 import { agentStudioRoutes } from "./routes/agentStudio.js";
 import { privacyRoutes } from "./routes/privacy.js";
+import fastifyWebsocket from "@fastify/websocket";
+import { mediaStreamRoutes } from "./routes/mediaStream.js";
+
+if (typeof (BigInt.prototype as any).toJSON !== "function") {
+  Object.defineProperty(BigInt.prototype, "toJSON", {
+    value: function toJSON(this: bigint) {
+      return this.toString();
+    },
+    writable: true,
+    configurable: true,
+  });
+}
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -25,7 +37,22 @@ export async function buildApp() {
   await app.register(securityHeaders);
   await app.register(lightweightRateLimit);
   await app.register(cors, { origin: true });
+  await app.register(fastifyWebsocket);
   await loadDb();
+
+  app.addContentTypeParser("application/x-www-form-urlencoded", { parseAs: "string" }, (req, body, done) => {
+    try {
+      const parsed = new URLSearchParams(body);
+      const result: Record<string, string> = {};
+      for (const [key, value] of parsed.entries()) {
+        result[key] = value;
+      }
+      done(null, result);
+    } catch (err: any) {
+      err.statusCode = 400;
+      done(err, undefined);
+    }
+  });
 
   app.get("/health", async () => ({
     ok: true,
@@ -44,6 +71,7 @@ export async function buildApp() {
   await app.register(historyRoutes);
   await app.register(agentStudioRoutes);
   await app.register(privacyRoutes);
+  await app.register(mediaStreamRoutes);
 
   return app;
 }

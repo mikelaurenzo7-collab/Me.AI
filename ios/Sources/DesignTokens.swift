@@ -11,6 +11,10 @@ enum MeAIDesign {
     static let primaryText = Color.primary
     static let secondaryText = Color.secondary
     static let accent = Color.accentColor
+
+    static let darkInk = Color(red: 0.05, green: 0.05, blue: 0.07)
+    static let primaryAccent = Color(red: 0.4, green: 0.5, blue: 1.0)
+    static let secondaryAccent = Color(red: 0.7, green: 0.4, blue: 1.0)
 }
 
 struct MeAIStatusChip: View {

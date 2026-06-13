@@ -86,6 +86,7 @@ struct ToolEventDTO: Codable, Identifiable {
     let callLogId: String?
     let toolName: String
     let status: String
+    let request: [String: String]?
     let createdAt: String
     let updatedAt: String
 }
