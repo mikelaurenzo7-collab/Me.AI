@@ -8,6 +8,7 @@ import { callRoutes } from "./routes/calls.js";
 import { deviceRoutes } from "./routes/devices.js";
 import { toolRoutes } from "./routes/tools.js";
 import { webhookRoutes } from "./routes/webhooks.js";
+import { submissionRoutes } from "./routes/submission.js";
 
 const app = Fastify({ logger: true });
 
@@ -27,5 +28,6 @@ await app.register(callRoutes);
 await app.register(deviceRoutes);
 await app.register(toolRoutes);
 await app.register(webhookRoutes);
+await app.register(submissionRoutes);
 
-await app.listen({ port: env.PORT, host: "127.0.0.1" });
+await app.listen({ port: env.PORT });
