@@ -24,10 +24,17 @@ struct DashboardView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Section("Driving-safe actions") {
-                    Button("Delegate active call to Me.AI") {}
-                    Button("Start outbound Me.AI call") {}
-                    Button("Open native tool permissions") {}
+                Section("iPhone-first actions") {
+                    NavigationLink("Set up activation", destination: ActivationSetupView())
+                    NavigationLink("Open setup checklist", destination: SetupFlowView())
+                    NavigationLink("View active call state", destination: ActiveCallView())
+                    Button("Start outbound Me.AI request") {}
+                    Button("Review pending confirmations") {}
+                }
+
+                Section("CarPlay") {
+                    Text("CarPlay is a premium extension. The iPhone experience comes first.")
+                        .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle("Me.AI")
