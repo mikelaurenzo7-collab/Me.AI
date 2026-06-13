@@ -3,6 +3,7 @@ import SwiftUI
 struct ActiveCallView: View {
     @EnvironmentObject private var appState: MeAIAppState
     @Environment(\.dismiss) private var dismiss
+    @State private var audioActive = false
 
     var body: some View {
         ZStack {
@@ -11,7 +12,7 @@ struct ActiveCallView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     // Header Status
-                    VStack(spacing: 8) {
+                    VStack(spacing: 12) {
                         Image(systemName: "waveform.and.mic")
                             .font(.system(size: 44))
                             .foregroundStyle(MeAIDesign.primaryAccent)
@@ -20,6 +21,30 @@ struct ActiveCallView: View {
                         Text("Active Screening")
                             .font(.title2.bold())
                             .foregroundStyle(.white)
+                        
+                        // Pulsing voice spectrum bars representing dynamic transcription
+                        HStack(spacing: 4) {
+                            ForEach(0..<6) { index in
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [MeAIDesign.primaryAccent, MeAIDesign.secondaryAccent],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        )
+                                    )
+                                    .frame(width: 4, height: waveHeight(for: index))
+                                    .animation(
+                                        .easeInOut(duration: 0.6)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index) * 0.1),
+                                        value: audioActive
+                                    )
+                            }
+                        }
+                        .frame(height: 24)
+                        .padding(.vertical, 4)
+                        .onAppear { audioActive = true }
                         
                         Text("Me.AI is protecting your attention")
                             .font(.subheadline)
@@ -190,5 +215,10 @@ struct ActiveCallView: View {
             }
         }
         .preferredColorScheme(.dark)
+    }
+
+    private func waveHeight(for index: Int) -> CGFloat {
+        let baseHeights: [CGFloat] = [12, 24, 18, 28, 14, 20]
+        return audioActive ? baseHeights[index % baseHeights.count] : 4
     }
 }

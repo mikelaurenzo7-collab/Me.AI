@@ -24,8 +24,9 @@ struct DashboardView: View {
                             }
                             Spacer()
                             Image(systemName: "sparkles")
-                                      .font(.title2)
-                                      .foregroundStyle(MeAIDesign.primaryAccent)
+                                .font(.title2)
+                                .foregroundStyle(MeAIDesign.primaryAccent)
+                                .symbolEffect(.pulse, options: .repeating)
                         }
                         .padding(.top)
 
@@ -34,6 +35,7 @@ struct DashboardView: View {
                             Text("ACCOUNT MODE")
                                 .font(.caption.bold())
                                 .foregroundStyle(MeAIDesign.primaryAccent)
+                                .tracking(1.2)
                             
                             Picker("Account", selection: $appState.accountMode) {
                                 ForEach(AccountMode.allCases) { mode in
@@ -43,15 +45,26 @@ struct DashboardView: View {
                             .pickerStyle(.segmented)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.compactCornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.compactCornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.compactCornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
 
                         // Circular Readiness Gauge Card
                         HStack(spacing: 16) {
                             ZStack {
                                 Circle()
-                                    .stroke(Color.white.opacity(0.08), lineWidth: 6)
+                                    .stroke(Color.white.opacity(0.05), lineWidth: 6)
                                     .frame(width: 65, height: 65)
                                 Circle()
                                     .trim(from: 0.0, to: CGFloat(appState.readiness.score) / CGFloat(appState.readiness.total))
@@ -61,6 +74,7 @@ struct DashboardView: View {
                                     )
                                     .frame(width: 65, height: 65)
                                     .rotationEffect(.degrees(-90))
+                                    .shadow(color: MeAIDesign.primaryAccent.opacity(0.4), radius: 6, x: 0, y: 0)
                                 Text("\(appState.readiness.score)/\(appState.readiness.total)")
                                     .font(.system(size: 14, weight: .bold))
                                     .foregroundStyle(.white)
@@ -77,9 +91,20 @@ struct DashboardView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
 
                         // Agent Configuration Card
                         VStack(alignment: .leading, spacing: 12) {
@@ -99,15 +124,27 @@ struct DashboardView: View {
                                 .lineSpacing(3)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
 
                         // Actions Panel Card
                         VStack(alignment: .leading, spacing: 14) {
                             Text("IPHONE-FIRST ACTIONS")
                                 .font(.caption.bold())
                                 .foregroundStyle(MeAIDesign.primaryAccent)
+                                .tracking(1.2)
                             
                             Group {
                                 NavigationLink(destination: ActivationSetupView()) {
@@ -154,15 +191,27 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
 
                         // Calls & Logs Card
                         VStack(alignment: .leading, spacing: 14) {
                             Text("CALL LOGS & DATA")
                                 .font(.caption.bold())
                                 .foregroundStyle(MeAIDesign.primaryAccent)
+                                .tracking(1.2)
                             
                             Group {
                                 NavigationLink(destination: CallHistoryView()) {
@@ -185,15 +234,27 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
 
                         // Security & Settings Card
                         VStack(alignment: .leading, spacing: 14) {
                             Text("SECURITY & TRUST")
                                 .font(.caption.bold())
                                 .foregroundStyle(MeAIDesign.primaryAccent)
+                                .tracking(1.2)
                             
                             Group {
                                 NavigationLink(destination: PrivacyCenterView()) {
@@ -216,9 +277,20 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.05))
+                        .background(Color.white.opacity(0.03))
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius).stroke(Color.white.opacity(0.1), lineWidth: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
                     }
                     .padding()
                 }
