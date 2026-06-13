@@ -1,0 +1,26 @@
+name: MeAI
+options:
+  bundleIdPrefix: com.meai
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: 5.10
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
+targets:
+  MeAI:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+    info:
+      path: Config/Info.plist
+    entitlements:
+      path: Config/MeAI.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.meai.app
+        INFOPLIST_FILE: Config/Info.plist
+        CODE_SIGN_STYLE: Automatic
+    dependencies: []
