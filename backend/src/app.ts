@@ -11,6 +11,7 @@ import { webhookRoutes } from "./routes/webhooks.js";
 import { submissionRoutes } from "./routes/submission.js";
 import { historyRoutes } from "./routes/history.js";
 import { agentStudioRoutes } from "./routes/agentStudio.js";
+import { privacyRoutes } from "./routes/privacy.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -34,6 +35,7 @@ export async function buildApp() {
   await app.register(submissionRoutes);
   await app.register(historyRoutes);
   await app.register(agentStudioRoutes);
+  await app.register(privacyRoutes);
 
   return app;
 }
