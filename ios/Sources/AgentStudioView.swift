@@ -31,6 +31,10 @@ struct AgentStudioView: View {
 struct AgentIdentityView: View {
     @EnvironmentObject private var appState: MeAIAppState
 
+    private var voiceExperience: VoiceExperienceProfile {
+        VoiceExperienceProfile.resolve(role: appState.agentProfile.responseStyle.defaultVoiceRole, isOutbound: false)
+    }
+
     var body: some View {
         Form {
             Section("Identity") {
@@ -63,10 +67,9 @@ struct AgentIdentityView: View {
             }
 
             Section("Voice experience") {
-                let profile = VoiceExperienceProfile.resolve(role: appState.agentProfile.responseStyle.defaultVoiceRole, isOutbound: false)
-                LabeledContent("Silence window", value: "\(profile.silenceTimeoutSeconds, specifier: "%.1f")s")
-                LabeledContent("Interrupt threshold", value: "\(profile.wordsToInterruptAssistant) words")
-                LabeledContent("Latency priority", value: "\(profile.streamingLatencyPriority)")
+                LabeledContent("Silence window", value: String(format: "%.1fs", voiceExperience.silenceTimeoutSeconds))
+                LabeledContent("Interrupt threshold", value: "\(voiceExperience.wordsToInterruptAssistant) words")
+                LabeledContent("Latency priority", value: "\(voiceExperience.streamingLatencyPriority)")
             }
         }
         .navigationTitle("Identity")
