@@ -19,6 +19,7 @@ The product's core use case happens while the user is driving. The CarPlay exper
 ## CarPlay surfaces
 
 - Me.AI status
+- WidgetKit operator status companion for non-driving glanceability
 - active call status
 - delegate or take-over call action
 - confirmation required notification
@@ -47,3 +48,4 @@ Me.AI processes call metadata, transcripts when enabled, summaries, user instruc
 5. Confirm the Me.AI status template appears.
 6. Trigger an active-call demo state.
 7. Confirm only status, delegate, take-over, and confirmation actions are visible.
+8. Add the Me.AI widget to the Home Screen or Lock Screen and confirm it shows the same high-level operator readiness without transcripts or sensitive call content.

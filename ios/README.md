@@ -8,7 +8,7 @@ This folder now includes source-level scaffolding plus an XcodeGen project spec.
 
 - `MeAI`: SwiftUI app target.
 - `MeAIIntents`: App Intents and Siri shortcuts, currently in source scaffold.
-- `MeAIWidget`: WidgetKit and Live Activity target, planned next.
+- `MeAIWidget`: WidgetKit operator status widget target for Home Screen, Lock Screen, and StandBy glanceability.
 
 ## Required capabilities
 
@@ -16,7 +16,7 @@ This folder now includes source-level scaffolding plus an XcodeGen project spec.
 - Push Notifications
 - Background Modes: Voice over IP, remote notifications, audio as needed
 - CarPlay communication entitlement after Apple approval
-- App Groups if widget and app share state
+- App Groups (`group.com.meai.shared`) so the widget and app can share operator readiness state
 
 ## Core files
 
@@ -36,6 +36,9 @@ This folder now includes source-level scaffolding plus an XcodeGen project spec.
 - `Config/MeAI.entitlements`
 - `Config/PrivacyInfo.xcprivacy`
 - `project.yml`
+- `Widget/MeAIWidgetBundle.swift`
+- `Config/MeAIWidget.Info.plist`
+- `Config/MeAIWidget.entitlements`
 
 ## Build notes
 

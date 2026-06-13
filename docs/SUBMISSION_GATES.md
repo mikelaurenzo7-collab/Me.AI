@@ -20,7 +20,8 @@ Required:
 
 - Xcode project exists.
 - App target builds.
-- Widget target builds.
+- Widget target builds and is embedded by the app target.
+- Widget previews cover small, medium, accessory rectangular, and inline status surfaces.
 - App Intents compile.
 - Backend typecheck passes.
 - Local backend smoke tests pass.
@@ -46,7 +47,7 @@ Required:
 
 - Apple Developer account configured.
 - Bundle ID created.
-- Capabilities configured.
+- Capabilities configured, including App Groups for app/widget shared status.
 - CarPlay communication entitlement request submitted.
 - Entitlement approved or fallback non-CarPlay TestFlight plan chosen.
 

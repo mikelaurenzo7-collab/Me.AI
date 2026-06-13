@@ -23,4 +23,22 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.meai.app
         INFOPLIST_FILE: Config/Info.plist
         CODE_SIGN_STYLE: Automatic
-    dependencies: []
+    dependencies:
+      - target: MeAIWidget
+        embed: true
+  MeAIWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widget
+    info:
+      path: Config/MeAIWidget.Info.plist
+    entitlements:
+      path: Config/MeAIWidget.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.meai.app.widget
+        INFOPLIST_FILE: Config/MeAIWidget.Info.plist
+        CODE_SIGN_STYLE: Automatic
+        APPLICATION_EXTENSION_API_ONLY: true
+        SKIP_INSTALL: true

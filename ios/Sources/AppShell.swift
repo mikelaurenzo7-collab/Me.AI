@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 struct MeAIAppShell: View {
     @StateObject private var appState = MeAIAppState()
@@ -66,6 +67,7 @@ final class MeAIAppState: ObservableObject {
     private var apiClient = APIClient(baseURL: AppConfiguration.local.apiBaseURL)
 
     init() {
+        publishWidgetSnapshot()
         Task {
             await autoAuthenticate()
         }
@@ -119,6 +121,7 @@ final class MeAIAppState: ObservableObject {
                             risk: risk
                         )
                     }
+                    self.publishWidgetSnapshot()
                 }
             } catch {
                 print("Failed to fetch pending confirmations: \(error)")
@@ -149,6 +152,7 @@ final class MeAIAppState: ObservableObject {
                             createdAt: date
                         )
                     }
+                    self.publishWidgetSnapshot()
                 }
             } catch {
                 print("Failed to fetch call history: \(error)")
@@ -170,6 +174,7 @@ final class MeAIAppState: ObservableObject {
 
     func takeoverActiveCall(callId: String) {
         isCallTransferring = true
+        publishWidgetSnapshot()
         Task {
             do {
                 let url = AppConfiguration.local.apiBaseURL.appending(path: "/api/calls/\(callId)/takeover")
@@ -188,6 +193,7 @@ final class MeAIAppState: ObservableObject {
                 
                 await MainActor.run {
                     self.isCallTransferring = false
+                    self.publishWidgetSnapshot()
                     self.fetchCallHistory()
                     self.fetchPendingConfirmations()
                 }
@@ -195,6 +201,7 @@ final class MeAIAppState: ObservableObject {
                 print("Failed to takeover active call: \(error)")
                 await MainActor.run {
                     self.isCallTransferring = false
+                    self.publishWidgetSnapshot()
                 }
             }
         }
@@ -213,10 +220,12 @@ final class MeAIAppState: ObservableObject {
                 hasProviderConnection: false
             )
         )
+        publishWidgetSnapshot()
     }
 
     func approve(_ confirmation: PendingConfirmation) {
         pendingConfirmations.removeAll { $0.id == confirmation.id }
+        publishWidgetSnapshot()
         Task {
             do {
                 _ = try await apiClient.approveToolEvent(id: confirmation.id)
@@ -230,6 +239,7 @@ final class MeAIAppState: ObservableObject {
 
     func decline(_ confirmation: PendingConfirmation) {
         pendingConfirmations.removeAll { $0.id == confirmation.id }
+        publishWidgetSnapshot()
         Task {
             do {
                 _ = try await apiClient.declineToolEvent(id: confirmation.id)
@@ -239,5 +249,25 @@ final class MeAIAppState: ObservableObject {
                 print("Failed to decline tool confirmation \(confirmation.id): \(error)")
             }
         }
+    }
+
+    private func publishWidgetSnapshot() {
+        let defaults = UserDefaults(suiteName: "group.com.meai.shared")
+        defaults?.set(readiness.score, forKey: "readinessScore")
+        defaults?.set(readiness.total, forKey: "readinessTotal")
+        defaults?.set(readiness.nextStep, forKey: "readinessNextStep")
+        defaults?.set(pendingConfirmations.count, forKey: "pendingConfirmations")
+        defaults?.set(widgetCallStatus, forKey: "activeCallStatus")
+        WidgetCenter.shared.reloadTimelines(ofKind: "MeAIOperatorStatusWidget")
+    }
+
+    private var widgetCallStatus: String {
+        if isCallTransferring {
+            return "Transferring active call to you"
+        }
+        if let activeCall = recentCalls.first(where: { $0.status == .active || $0.status == .ringing }) {
+            return "\(activeCall.status.label): \(activeCall.contactName)"
+        }
+        return "Operator ready to screen calls"
     }
 }
