@@ -43,6 +43,12 @@ struct DashboardView: View {
                     NavigationLink("Contact rules", destination: ContactRulesView())
                 }
 
+                Section("Trust") {
+                    NavigationLink("Privacy Center", destination: PrivacyCenterView())
+                    Text("Permissions, data controls, and confirmation rules stay visible.")
+                        .foregroundStyle(.secondary)
+                }
+
                 Section("CarPlay") {
                     Text("CarPlay is a premium extension. The iPhone experience comes first.")
                         .foregroundStyle(.secondary)
