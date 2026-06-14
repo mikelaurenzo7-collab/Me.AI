@@ -4,6 +4,8 @@ struct ActiveCallView: View {
     @EnvironmentObject private var appState: MeAIAppState
     @Environment(\.dismiss) private var dismiss
     @State private var audioActive = false
+    
+    var voiceService = RealtimeVoiceService.shared
 
     var body: some View {
         ZStack {
@@ -44,7 +46,14 @@ struct ActiveCallView: View {
                         }
                         .frame(height: 24)
                         .padding(.vertical, 4)
-                        .onAppear { audioActive = true }
+                        .onAppear { 
+                            audioActive = true 
+                            // Request ephemeral token from your APIClient here in production
+                            voiceService.connect(token: "sk-your-openai-realtime-key")
+                        }
+                        .onDisappear {
+                            voiceService.disconnect()
+                        }
                         
                         Text("Me.AI is protecting your attention")
                             .font(.subheadline)
@@ -65,7 +74,7 @@ struct ActiveCallView: View {
                             }
                         }
                         
-                        Text("“Hi, this is Me.AI. I can help route the call. What is this regarding? ... The caller indicates they are asking for availability to schedule a callback window.”")
+                        Text("“\(voiceService.activeTranscript)”")
                             .font(.body)
                             .foregroundStyle(.white)
                             .lineSpacing(4)
@@ -219,6 +228,8 @@ struct ActiveCallView: View {
 
     private func waveHeight(for index: Int) -> CGFloat {
         let baseHeights: [CGFloat] = [12, 24, 18, 28, 14, 20]
-        return audioActive ? baseHeights[index % baseHeights.count] : 4
+        let energy = max(CGFloat(voiceService.currentEnergyLevel), 0.05)
+        let energyScale = min(energy * 20.0, 3.0) // Cap the multiplier
+        return audioActive ? (baseHeights[index % baseHeights.count] * energyScale) + 4 : 4
     }
 }

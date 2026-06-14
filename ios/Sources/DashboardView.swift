@@ -45,20 +45,13 @@ struct DashboardView: View {
                             .pickerStyle(.segmented)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.compactCornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.compactCornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
 
                         // Circular Readiness Gauge Card
                         HStack(spacing: 16) {
@@ -91,20 +84,13 @@ struct DashboardView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
 
                         // Agent Configuration Card
                         VStack(alignment: .leading, spacing: 12) {
@@ -124,20 +110,13 @@ struct DashboardView: View {
                                 .lineSpacing(3)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
 
                         // Actions Panel Card
                         VStack(alignment: .leading, spacing: 14) {
@@ -191,20 +170,13 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
 
                         // Calls & Logs Card
                         VStack(alignment: .leading, spacing: 14) {
@@ -234,20 +206,13 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
 
                         // Security & Settings Card
                         VStack(alignment: .leading, spacing: 14) {
@@ -277,20 +242,13 @@ struct DashboardView: View {
                             .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.03))
+                        .background(MeAIDesign.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: MeAIDesign.cornerRadius)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [Color.white.opacity(0.15), Color.white.opacity(0.03)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
-                                    lineWidth: 1
-                                )
+                                .stroke(MeAIDesign.editorialBorder, lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.25), radius: 10, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
                     }
                     .padding()
                 }

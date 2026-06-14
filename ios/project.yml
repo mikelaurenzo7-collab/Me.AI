@@ -23,22 +23,25 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.meai.app
         INFOPLIST_FILE: Config/Info.plist
         CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
-      - target: MeAIWidget
+      - target: MeAIWidgets
         embed: true
-  MeAIWidget:
+
+  MeAIWidgets:
     type: app-extension
     platform: iOS
     sources:
-      - Widget
+      - path: Widgets
+      - path: Sources/LiveCallAttributes.swift
     info:
-      path: Config/MeAIWidget.Info.plist
-    entitlements:
-      path: Config/MeAIWidget.entitlements
+      path: Config/Widgets-Info.plist
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.meai.app.widget
-        INFOPLIST_FILE: Config/MeAIWidget.Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.meai.app.widgets
+        INFOPLIST_FILE: Config/Widgets-Info.plist
         CODE_SIGN_STYLE: Automatic
+        EXCLUDED_ARCHS[sdk=iphonesimulator*]: ""
         APPLICATION_EXTENSION_API_ONLY: true
         SKIP_INSTALL: true
+    dependencies: []
